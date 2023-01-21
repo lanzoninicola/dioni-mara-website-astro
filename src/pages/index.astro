@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const users = await fetch("https://jsonplaceholder.typicode.com/users").then(
+  (res) => res.json()
+);
+const users2 = await fetch("https://jsonplaceholder.typicode.com/users").then(
+  (res) => res.json()
+);
+
+// https://github.com/pilcrowOnPaper/astro-form-actions
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <div>
+      {users.map((user) => <div>{user.name}</div>)}
+    </div>
+    <div class="grid place-items-center h-screen">
+      <form action="/" method="post">
+        <input
+          type="text"
+          id="email"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="name@flowbite.com"
+          required
+        />
+        <button type="submit">submit</button>
+      </form>
+    </div>
+  </main>
+</Layout>
