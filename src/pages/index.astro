@@ -1,32 +1,38 @@
 ---
+import FloatCta from "../components/float-cta/float-cta.astro";
+import HeadlineFadeIn from "../components/headline-fadein/headline-fadein";
+import InnerContent from "../components/layout/inner-content/inner-content";
 import Layout from "../layouts/Layout.astro";
-
-const users = await fetch("https://jsonplaceholder.typicode.com/users").then(
-  (res) => res.json()
-);
-const users2 = await fetch("https://jsonplaceholder.typicode.com/users").then(
-  (res) => res.json()
-);
-
-// https://github.com/pilcrowOnPaper/astro-form-actions
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
-    <div>
-      {users.map((user) => <div>{user.name}</div>)}
-    </div>
-    <div class="grid place-items-center h-screen">
-      <form action="/" method="post">
-        <input
-          type="text"
-          id="email"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="name@flowbite.com"
-          required
-        />
-        <button type="submit">submit</button>
-      </form>
-    </div>
+    <section id="hero" class="relative h-screen w-screen py-16 md:py-36">
+      <div class="absolute inset-0 -z-10 bg-hero-image bg-cover bg-center">
+        <div class="absolute inset-0 bg-hero-radial-gradient"></div>
+      </div>
+      <InnerContent clazzName="md:flex md:items-end">
+        <div
+          class="grid h-full w-full grid-rows-[_1fr_.25fr] items-center md:h-max md:grid-cols-[1fr_.25fr] md:grid-rows-1"
+        >
+          <div class="flex w-full flex-col">
+            <HeadlineFadeIn />
+
+            <div
+              class="md:items-left grid w-full grid-rows-3 items-center justify-items-start gap-4 md:grid-cols-3 md:grid-rows-1"
+            >
+              <h2 class="text-3xl tracking-widest text-white">Massagens</h2>
+              <h2 class="text-3xl tracking-widest text-white">
+                Terapia holística
+              </h2>
+              <h2 class="text-3xl tracking-widest text-white">Yoga</h2>
+            </div>
+            <div class="w-full self-end">
+              <FloatCta class="bg-sky-400" />
+            </div>
+          </div>
+        </div>
+      </InnerContent>
+    </section>
   </main>
 </Layout>

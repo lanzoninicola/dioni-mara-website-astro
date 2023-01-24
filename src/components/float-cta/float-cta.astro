@@ -1,0 +1,28 @@
+---
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  title="agende um horario"
+  class={`${className} button-animate grid h-[120px] w-[120px] place-items-center rounded-full bg-white text-black shadow-lg hover:bg-tea-500 hover:text-white`}
+>
+  <span
+    class="text-center text-md font-bold uppercase leading-tight tracking-wider"
+  >
+    Agende <br />
+    um
+    <br /> horário
+  </span>
+</button>
+
+<style lang="scss">
+  .button-animate {
+    transition: transform 250ms ease-in-out 0s,
+      background-color 250ms ease-in-out 0s;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+</style>
