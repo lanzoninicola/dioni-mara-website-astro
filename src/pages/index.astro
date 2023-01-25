@@ -13,7 +13,7 @@ import Layout from "../layouts/Layout.astro";
       </div>
       <InnerContent clazzName="md:flex md:items-end">
         <div
-          class="grid h-full w-full grid-rows-[_1fr_.25fr] items-center md:h-max md:grid-cols-[1fr_.25fr] md:grid-rows-1"
+          class="relative grid h-full w-full grid-rows-[_1fr_.25fr] items-center md:h-max md:grid-cols-[1fr_.25fr] md:grid-rows-1"
         >
           <div class="flex w-full flex-col">
             <HeadlineFadeIn />
@@ -27,9 +27,9 @@ import Layout from "../layouts/Layout.astro";
               </h2>
               <h2 class="text-3xl tracking-widest text-white">Yoga</h2>
             </div>
-            <div class="w-full self-end">
-              <FloatCta class="bg-sky-400" />
-            </div>
+          </div>
+          <div class="absolute bottom-0 right-0">
+            <FloatCta class="bg-sky-400" />
           </div>
         </div>
       </InnerContent>
