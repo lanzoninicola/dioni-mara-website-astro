@@ -1,0 +1,41 @@
+{
+  "name": "dioni-mara-website-astro",
+  "version": "1.0.0",
+  "description": "This is a template for [Payload CMS](https://payloadcms.com) and [Astro](https://astro.build) It is a simple blog template with a few pages and a blog post collection. It is fully typed with TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "==0==": "==== BUILDING THE IMAGE *DIONIMARA-PROXY* AND PULL TO THE DOCKER HUB ====",
+    "docker:traefik:build": "docker compose -p dioni-mara-website -f docker-compose.traefik.yml build --no-cache",
+    "docker:traefik:commit": "docker commit traefik lanzoninicola/dionimara-proxy:latest",
+    "docker:traefik:push": "docker push lanzoninicola/dionimara-proxy:latest",
+    "docker:traefik:deploy": "npm run docker:traefik:build && npm run docker:traefik:commit && npm run docker:traefik:push",
+    "==1==": "==== BUILDING THE IMAGE *DIONIMARA-WEBSITE* AND PULL TO THE DOCKER HUB ====",
+    "docker:website:build": "docker compose -p dioni-mara-website -f docker-compose.website.yml build --no-cache",
+    "docker:website:commit": "docker commit website lanzoninicola/dionimara-website:latest",
+    "docker:website:push": "docker push lanzoninicola/dionimara-website:latest",
+    "docker:website:deploy": "npm run docker:website:build && npm run docker:website:commit && npm run docker:website:push",
+    "==2==": "==== BUILDING THE IMAGE *DIONIMARA-PAYLOAD* AND PULL TO THE DOCKER HUB ====",
+    "docker:payload:build": "docker compose -p dioni-mara-website -f docker-compose.payload.yml build --no-cache",
+    "docker:payload:commit": "docker commit payload lanzoninicola/dionimara-payload:latest",
+    "docker:payload:push": "docker push lanzoninicola/dionimara-payload:latest",
+    "docker:payload:deploy": "npm run docker:payload:build && npm run docker:payload:commit && npm run docker:payload:push",
+    "====": "===============================",
+    "docker:local:up": "npm run widget:deploy && docker compose -p clockdown-local -f docker-compose.local.yml up -d --build",
+    "==/==": "===============================",
+    "docker:prod:up": "npm run widget:deploy && docker compose -p clockdown-prod -f docker-compose.yml up -d --build",
+    "docker:prod:up:no-cache": "npm run widget:deploy && docker compose -f docker-compose.yml up -d --build --no-cache",
+    "==//==": "===============================",
+    "stop": "docker compose -f docker-compose.yml down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanzoninicola/dioni-mara-website-astro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lanzoninicola/dioni-mara-website-astro/issues"
+  },
+  "homepage": "https://github.com/lanzoninicola/dioni-mara-website-astro#readme"
+}

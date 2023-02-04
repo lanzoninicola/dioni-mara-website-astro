@@ -1,0 +1,22 @@
+# This file is use to generate the image and pull to the Docker hub (via package.json)
+# The image will be used by the docker-compose.yml file that I will run on the server
+# ---
+# If there is any update on the project, I will need to run the following command to update the image on the Docker hub
+# ---
+version: "3"
+
+services:
+  website:
+    build: ./frontend
+    container_name: website
+    # specifies the build configuration for creating container image from source (Dockerfile)
+    hostname: website
+    command: "npm start"
+    working_dir: /myapp
+    environment:
+      - ./frontend/.env
+    # expose is a metadata, it has no effect on the container
+    expose:
+      - "3000"
+    #ports:
+    #  - "80:3000"

@@ -1,0 +1,20 @@
+# This file is use to generate the image and pull to the Docker hub (via package.json)
+# The image will be used by the docker-compose.yml file that I will run on the server
+# ---
+# If there is any update on the project, I will need to run the following command to update the image on the Docker hub
+# ---
+version: "3"
+
+services:
+  payload:
+    build: ./backend
+    container_name: payload
+    # specifies the build configuration for creating container image from source (Dockerfile)
+    hostname: payload
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "yarn install && yarn dev"
+    environment:
+      - ./backend/.env

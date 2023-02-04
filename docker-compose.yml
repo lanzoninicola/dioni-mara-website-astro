@@ -3,91 +3,62 @@
 version: "3"
 
 volumes:
-  pgdata:
+  node_modules:
     driver: local
-
 networks:
-  frontend:
+  payload_vlan:
     driver: bridge
-  backend:
-    driver: bridge
-  proxy:
+  website_vlan:
     driver: bridge
 
 services:
   website:
-    image: lanzoninicola/clockdown-website:latest
-    container_name: clockdown-website
-    hostname: clockdown-website
+    image: lanzoninicola/dionimara-website:latest
+    container_name: website
+    hostname: website
     #restart: always
-    #depends_on:
-    #- postgres
+    depends_on:
+      - payload
     networks:
-      - frontend
-      - backend
+      - website_vlan
     command: "npm start"
     working_dir: /myapp
     environment:
-      - NODE_ENV=production
+      - ./frontend/.env
     # expose is a metadata, it has no effect on the container
     expose:
       - "3000"
     #ports:
     #  - "80:3000"
 
-  # This is the configuration for our PostgreSQL database container
-  # Note the `postgres` name is important, in out Node app when we refer
-  # to  `host: "postgres"` that value is mapped on the network to the
-  # address of this container.
-  postgres:
-    container_name: clockdown-db
-    image: postgres:14.1-alpine
-    hostname: clockdown-db
+  payload:
+    image: lanzoninicola/dionimara-payload:latest
+    container_name: payload
     networks:
-      - backend
-    environment:
-      # You can set the value of environment variables
-      # in your docker-compose.yml file
-      # Our Node app will use these to connect
-      # to the database
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=root
+      - payload_vlan
     expose:
-      - "5432"
-    #ports:
-    # Standard port for PostgreSQL databases
-    # - "3254:5432"
-    #   volumes:
-    # When the PostgresSQL container is started it will run any scripts
-    # provided in the `docker-entrypoint-initdb.d` directory, this connects
-    # our seed file to that directory so that it gets run
-    # - ./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+      - "3000"
+    ports:
+      - "3000:3000"
     volumes:
-      #- ./data:/data/db
-      - pgdata:/var/lib/postgresql/data
-
-  # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: clockdown-pgadmin
-    hostname: clockdown-pgadmin
-    networks:
-      - frontend
-      - backend
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "yarn install && yarn dev"
+    # environment:
+    #   MONGODB_URI: mongodb+srv://mongo:5B94088E166EB558A70B8419B8B29DC4@cluster0.hiasuou.mongodb.net/?retryWrites=true&w=majority
+    #   PORT: 3000
+    #   NODE_ENV: production
+    #   PAYLOAD_SECRET: 5AF468B29DAC5E3CA00B41B7B00F2895A4E20D94EAD2DE7E8694B2E7B5BA7C0A
     environment:
-      PGADMIN_DEFAULT_EMAIL: "placeholder@example.com"
-      PGADMIN_DEFAULT_PASSWORD: "fakepassword123!"
-    #ports:
-    #  - "80:80"
-    depends_on:
-      - postgres
+      - ./backend/.env
 
   traefik:
-    image: lanzoninicola/traefik:latest
+    image: lanzoninicola/dionimara-proxy:latest
     container_name: "traefik"
     networks:
-      - frontend
+      - payload_vlan
+      - website_vlan
     ports:
       - "80:80"
       - "443:443"
