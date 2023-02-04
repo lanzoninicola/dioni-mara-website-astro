@@ -30,9 +30,19 @@ export async function getPosts(
   query: any = null
 ): Promise<PayloadCollection<Post>> {
   const stringifiedQuery = qs.stringify(query, { addQueryPrefix: true });
+  console.log("🚀 ~ file: api.ts:33 ~ stringifiedQuery", stringifiedQuery);
 
   const data = await apiFetch(
     `${import.meta.env.PAYLOAD_URL}/api/posts${stringifiedQuery}`
   );
   return data;
+}
+
+export async function findAll(slug: string): Promise<Post[]> {
+  const data = await apiFetch(
+    `${import.meta.env.PAYLOAD_URL}/api/posts?where[slug]=${slug}`
+  );
+  console.log("🚀 ~ file: api.ts:45 ~ findAll ~ data.docs", data.docs);
+
+  return data.docs || null;
 }

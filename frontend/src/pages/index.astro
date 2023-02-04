@@ -10,14 +10,16 @@ const posts = data.docs;
 	<main>
 		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
 
+		
+
 		{
-			posts.map((post) => (
-				<Card
+			posts.map((post) => {
+				return <Card
 					href={`/posts/${post.slug}`}
 					title={post.title || "Untitled"}
 					body={"Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
 				/>
-			))
+			})
 		}
 	</main>
 </Layout>
